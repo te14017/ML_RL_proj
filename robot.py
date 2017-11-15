@@ -24,7 +24,7 @@ class Robot(object):
         self.gamma = 1  # discount factor
         self.epsilon = 0.9999  # exploration rate
         self.explorations = 0  # counts number of explorations
-        self.exploration_threshold = 800
+        self.exploration_threshold = 3000
         self.bust_penalty_below = -1  # penalty of bust below 1
         self.bust_penalty_above = -1   # penalty of bust above 21
         self.dealer_bust_reward = 1    # reward of dealer bust

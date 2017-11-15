@@ -14,7 +14,7 @@ import random
 def main():
     robot = Robot()
     i = 1
-    n = 2000
+    n = 5000
     #random.seed(2016)
     while i <= n:
         terminate = False
