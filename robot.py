@@ -24,7 +24,8 @@ class Robot(object):
         self.gamma = 1  # discount factor
         self.epsilon = 0.9999  # exploration rate
         self.explorations = 0  # counts number of explorations
-        self.exploration_threshold = 3000
+        self.exploration_threshold = 1000   # exploration rate only decline after robot's exploration reach the threshold
+
         self.bust_penalty_below = -1  # penalty of bust below 1
         self.bust_penalty_above = -1   # penalty of bust above 21
         self.dealer_bust_reward = 1    # reward of dealer bust
@@ -83,11 +84,11 @@ class Robot(object):
         :param reward: reward robot gets
         :return: nothing
         """
-        self._updateQ(state=new_state, action=action, reward=reward)
+        self._updateQ(newState=new_state, action=action, reward=reward)
         self.previous_states.append(self.state)
         self.state = new_state
 
-    def _updateQ(self, state, action, reward):
+    def _updateQ(self, newState, action, reward):
         """
         Updates all q values
         :param state: robot's new State
@@ -98,7 +99,7 @@ class Robot(object):
         current_q = self.q.get((self.state, action), 0)
         value_list = []
         for state_action_pair, value in self.q.items():
-            if state == state_action_pair[0]:
+            if newState == state_action_pair[0]:
                 value_list.append(value)
         next_q = max(value_list) if value_list else 0
 

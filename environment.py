@@ -84,7 +84,7 @@ class Environment(object):
                 newState.robot_sum -= card.value
             else:
                 newState.robot_sum += card.value
-            # check if robot is bust
+            # check if robot is bust(if is, below 1 or above 21)
             if Environment._is_bust(newState.robot_sum) == -1:
                 reward = robot.bust_penalty_below
                 terminate = True
