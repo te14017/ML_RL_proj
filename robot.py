@@ -24,7 +24,7 @@ class Robot(object):
         self.gamma = 1  # discount factor
         self.epsilon = 0.9999  # exploration rate
         self.explorations = 0  # counts number of explorations
-        self.exploration_threshold = 1000   # exploration rate only decline after robot's exploration reach the threshold
+        self.exploration_threshold = 2500   # exploration rate only decline after robot's exploration reach the threshold
 
         self.bust_penalty_below = -1  # penalty of bust below 1
         self.bust_penalty_above = -1   # penalty of bust above 21
@@ -33,7 +33,7 @@ class Robot(object):
     def __repr__(self):
         return "%s is @ %s. " % (self.__class__.__name__, self.state)
 
-    def doAction(self):
+    def doAction(self, explore=False):
         """ Let the robot perform his card play
         :return Action
         """
@@ -54,7 +54,7 @@ class Robot(object):
 
         go_on_exploration = random.uniform(0, 1) < self.epsilon  # determines whether the robot should explore or not
         # the exploration rate will only be decrease when the robot was already exploring for some time
-        if self.explorations > self.exploration_threshold:
+        if self.explorations > self.exploration_threshold and not explore:
             if self.epsilon > 0:
                 self.epsilon -= 0.01
 
@@ -111,4 +111,31 @@ class Robot(object):
         """Resets the robot to start without erasing the q values"""
         dealer_card, robot_card = Environment.dealCards()
         self.state = State(dealer_card, robot_card.value)
+
+    def evaluate_robot(self):
+        runs = 5000
+        wins = 0  # how many times robot win the game
+        i = 1
+
+        # firstly calculate the complete random play case
+        self.epsilon = 1
+        while i <= runs:
+            action = self.doAction(explore=True)
+            newState, reward, terminate, dealer_final = Environment.doStep(self, action)
+            if reward == 1:
+                wins += 1
+            i += 1
+        print("Evaluation of random play: Wins / Runs is : " + str(wins / runs))
+
+        # then calculate the ideal play case
+        wins = 0
+        i = 1
+        self.epsilon = 0  # set exploration rate to 0 to evaluate its Q-value quality
+        while i <= runs:
+            action = self.doAction()
+            newState, reward, terminate, dealer_final = Environment.doStep(self, action)
+            if reward == 1:
+                wins += 1
+            i += 1
+        print("Evaluation of ideal play: Wins / Runs is " + str(wins / runs))
 

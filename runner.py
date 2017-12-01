@@ -14,8 +14,7 @@ import random
 def main():
     robot = Robot()
     i = 1
-    n = 5000   # trials we want to run
-    wins = 0
+    n = 3000   # trials we want to run
     random.seed(2016)
     while i <= n:
         terminate = False
@@ -26,9 +25,6 @@ def main():
             robot.update(new_state=newState, action=action, reward=reward)
             steps += 1
 
-        # caculate how many times robot win the game
-        if reward == 1:
-            wins += 1
         # pretty output that helps
         if n-i < 50:
             print("Trial %s: # steps: %d - %s. dealer's final: %d, Reward is: %d" % (i, steps, robot, dealer_final, reward))
@@ -37,8 +33,10 @@ def main():
         i += 1
     print("size of robot's Q value dictionary: " + str(len(robot.q)))
     print("random exploration times: " + str(robot.explorations) + ", " + str(robot.epsilon))
-    print("Wins / Trials: " + str(wins/n))
-    #print(robot.q)
+    # print(robot.q)
+
+    """Next evaluate robot's performance"""
+    robot.evaluate_robot()
 
 
 if __name__ == '__main__':
