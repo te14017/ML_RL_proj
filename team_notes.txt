@@ -1,0 +1,29 @@
+Meeting on 1st, Dec
+Participant: Yves, Theo, Victoria
+
+Project report structure:
+
+1. Introduction to the problem
+    1.1 Problem desctiption: Easy21
+    1.2 Algorithm selection: SARSA, Q-learning, Multi-Step TD
+    1.3 Implementation
+
+2. Algorithm experiment & Parameter tuning
+    experiment with SARSA, Q-learning and Multi-Step, report parameter's influence on robot's behavior
+    (learning rate, exploration rate etc.)
+
+3. Algorithm comparison and discussion
+    compare those 3 algorithms using figures (such as sum of rewards, see the slides)
+    discuss their difference
+
+@ Yves:
+comparison measurements investigation
+output code development (code for producing figures), create another branch
+
+@ Theo:
+Implement the other 2 algorithms
+
+@ Victoria & Lily:
+Answer question sheet, structure report (upload to google drive for cooperate)
+parameter experiment and report(After we finish implementation)
+==========
