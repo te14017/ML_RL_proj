@@ -40,6 +40,14 @@ class Card(object):
         else:
             return 1
 
+    def __gt__(self, other):
+        if self.color == other.color:
+            return self.value > other.value
+        elif self.color == Card.COLOR.Black:
+            return True
+        else:
+            return False
+
     def __hash__(self):
         return hash((self.color, self.value))
 
@@ -61,6 +69,22 @@ class State(object):
 
     def __hash__(self):
         return hash((self.dealer_card, self.robot_sum))
+
+    def __cmp__(self, other):
+        if self.dealer_card < other.dealer_card:
+            return -1
+        elif self.dealer_card > other.dealer_card:
+            return 1
+        else:
+            if self.robot_sum == other.robot_sum:
+                return 0
+            elif self.robot_sum < other.robot_sum:
+                return -1
+            else:
+                return 1
+
+    def __gt__(self, other):
+        return self.dealer_card > other.dealer_card and self.robot_sum > other.robot_sum
 
 # actions the robot able to perform
 ACTION = Enum('ACTION', ('hit', 'stick'))
