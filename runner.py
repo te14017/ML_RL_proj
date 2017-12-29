@@ -10,7 +10,7 @@ from robot import *
 from environment import Environment
 import random
 import math
-
+import plotter
 
 def main():
     # algo: 1 is Q-learning, 2 is TD
@@ -58,8 +58,9 @@ def main():
     print(robot.q)
 
     """Next evaluate robot's performance"""
-    robot.evaluate_robot()
+    # robot.evaluate_robot()
 
+    plotter.createplot(robot)
 
 if __name__ == '__main__':
     main()
