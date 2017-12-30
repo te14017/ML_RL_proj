@@ -32,9 +32,9 @@ class Robot(object):
         self.explorations = 0  # counts number of explorations
         self.exploration_threshold = 3000   # exploration rate only decline after robot's exploration reach the threshold
 
-        self.bust_penalty_below = -1  # penalty of bust below 1
+        self.bust_penalty_below = -10  # penalty of bust below 1
         self.bust_penalty_above = -1   # penalty of bust above 21
-        self.dealer_bust_reward = 1    # reward of dealer bust
+        self.dealer_bust_reward = 10    # reward of dealer bust
 
     def __repr__(self):
         return "%s is @ %s. " % (self.__class__.__name__, self.state)
@@ -152,7 +152,7 @@ class Robot(object):
                 action = self.doAction(explore=True)
                 newState, reward, terminate, dealer_final = Environment.doStep(self, action)
                 self.update(new_state=newState, action=action, reward=reward)
-            if reward == 1:
+            if reward >= 1:
                 wins += 1
             self.reset()
             i += 1
@@ -168,7 +168,7 @@ class Robot(object):
                 action = self.doAction()
                 newState, reward, terminate, dealer_final = Environment.doStep(self, action)
                 self.update(new_state=newState, action=action, reward=reward)
-            if reward == 1:
+            if reward >= 1:
                 wins += 1
 
             self.reset()

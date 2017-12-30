@@ -61,7 +61,7 @@ def main():
     print(robot.q)
 
     """Next evaluate robot's performance"""
-    # robot.evaluate_robot()
+    robot.evaluate_robot()
 
     #plotter.createplot(robot)
     plotter.create2dplot(robot, dealers_init_val)
