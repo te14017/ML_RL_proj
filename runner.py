@@ -15,7 +15,10 @@ import plotter
 def main():
     # algo: 1 is Q-learning, 2 is TD
     # multi-step: when algo=2, if multi-step=1, then it's SARSA
-    robot = Robot(algo=1, multi_step=1)
+    robot = Robot(algo=2, multi_step=5)
+    # dealer's initial card value for plotting
+    # pick a value in the range 1 to 10
+    dealers_init_val = 10
     i = 1
     n = 3000   # trials we want to run
     wins = 0
@@ -60,7 +63,8 @@ def main():
     """Next evaluate robot's performance"""
     # robot.evaluate_robot()
 
-    plotter.createplot(robot)
+    #plotter.createplot(robot)
+    plotter.create2dplot(robot, dealers_init_val)
 
 if __name__ == '__main__':
     main()

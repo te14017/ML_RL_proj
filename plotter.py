@@ -91,6 +91,20 @@ def subtractactions(d):
             tdir[(key[0], helpers.ACTION.hit)] = new_q
     return tdir, 'subtracted_hit_stick'
 
+def getalgoname(a, ms):
+    '''
+    Returns the algorithms name.
+    :param a: algorithm number of the robot.
+    :param ms: multistep number of the robot.
+    :return: The name of the algorithm.
+    '''
+    if a == 1 and ms == 1:
+        t = 'Q-Learning'
+    elif a == 2 and ms == 1:
+        t = 'SALASA'
+    else:
+        t = 'Multistep'
+    return t
 
 def createplot(robot):
     """
@@ -127,12 +141,7 @@ def createplot(robot):
     Z = zs.reshape(X.shape)
 
     # retreiving the name of the algorithm
-    if robot.algo == 1 and robot.multi_step == 1:
-        title = 'Q-Learning'
-    elif robot.algo == 2 and robot.multi_step == 1:
-        title = 'SALASA'
-    else:
-        title = 'Multistep'
+    title = getalgoname(robot.algo, robot.multi_step)
 
     # defining the figure
     fig = plt.figure()
@@ -155,3 +164,63 @@ def createplot(robot):
     # stores the figure as png in the output directory
     plt.savefig('output/'+title+'_'+ valuehandling+'.png')
     print('Figure for '+title+' has been stored in the output directory.')
+
+def create2dplot(robot, dealerval):
+    """
+       Creates a 2d plot of the q-value dictionary compiled by the learning function of the robot.
+       One dealer initial state is picked, all the robot/player's sums and q-values corresponding
+       to that initial state are printed
+       :param robot: robot compiled by the reinforcement learning algorithm
+       :param dealerval: the value of the dealer to be used for printing
+       :return: nothing - image is stored in the output directory
+       """
+
+    plotq = robot.q
+
+    # defining the y-axis
+    X = np.arange(0, 22, 1)
+    Yh = np.zeros(22)
+    Ys = np.zeros(22)
+
+    zmax = -10
+    # extracting the q-values and store it in a y-axis array for hit or stick
+    for key in plotq:
+        if key[0].dealer_card.value == dealerval:
+            j = key[0].robot_sum
+            qval = plotq[key]
+            if key[1] == helpers.ACTION.hit:
+                Yh[j] = qval
+            else:
+                Ys[j] = qval
+            zmax = max(zmax, qval)
+
+    Yh = np.array(Yh)
+    Ys = np.array(Ys)
+
+    # retreiving the name of the algorithm
+    title = getalgoname(robot.algo, robot.multi_step)
+    valuehandling = '2d_plot_dealer_'+ str(dealerval)
+
+    # defining the figure with title and subtitle
+    fig = plt.figure()
+    fig.suptitle(title, fontsize=14, fontweight='bold')
+    ax = fig.add_subplot(111)
+    ax.set_title('Dealer\'s initial card ' + str(dealerval))
+
+    # First plot stick
+    plt.plot(X, Ys, label='Stick', color='red')
+
+    # Second plot hit
+    plt.plot(X, Yh, label='Hit', color='lightblue')
+
+    plt.xlabel('Player sum')
+    plt.ylabel('Q-Value')
+    plt.legend()
+
+    ax.set_xlim(1, 21)
+    plt.xticks(np.arange(1, max(X) + 1, 1.0))
+
+    #plt.show()
+    # stores the figure as png in the output directory
+    plt.savefig('output/' + title + '_' + valuehandling + '.png')
+    print('Figure for ' + title + ' has been stored in the output directory.')
